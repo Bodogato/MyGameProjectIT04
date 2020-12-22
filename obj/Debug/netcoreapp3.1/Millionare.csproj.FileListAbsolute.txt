@@ -1,0 +1,13 @@
+C:\Users\user\source\repos\Millionare\bin\Debug\netcoreapp3.1\Millionare.exe
+C:\Users\user\source\repos\Millionare\bin\Debug\netcoreapp3.1\Millionare.deps.json
+C:\Users\user\source\repos\Millionare\bin\Debug\netcoreapp3.1\Millionare.runtimeconfig.json
+C:\Users\user\source\repos\Millionare\bin\Debug\netcoreapp3.1\Millionare.runtimeconfig.dev.json
+C:\Users\user\source\repos\Millionare\bin\Debug\netcoreapp3.1\Millionare.dll
+C:\Users\user\source\repos\Millionare\bin\Debug\netcoreapp3.1\Millionare.pdb
+C:\Users\user\source\repos\Millionare\obj\Debug\netcoreapp3.1\Millionare.csprojAssemblyReference.cache
+C:\Users\user\source\repos\Millionare\obj\Debug\netcoreapp3.1\Millionare.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\Millionare\obj\Debug\netcoreapp3.1\Millionare.AssemblyInfo.cs
+C:\Users\user\source\repos\Millionare\obj\Debug\netcoreapp3.1\Millionare.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\Millionare\obj\Debug\netcoreapp3.1\Millionare.dll
+C:\Users\user\source\repos\Millionare\obj\Debug\netcoreapp3.1\Millionare.pdb
+C:\Users\user\source\repos\Millionare\obj\Debug\netcoreapp3.1\Millionare.genruntimeconfig.cache
