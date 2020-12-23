@@ -321,7 +321,6 @@ namespace Millionare
                 Console.Clear();
             }
         }
-
         static void MainScreen()
         {
             Console.Write("                                                             ────────────────");
