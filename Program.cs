@@ -11,8 +11,8 @@ namespace Millionare
         {
             Console.WindowHeight = 40;
             Console.BufferHeight = 40;
-            Console.WindowWidth = 105;
-            Console.BufferWidth = 105;
+            Console.WindowWidth = 140;
+            Console.BufferWidth = 140;
             Console.Clear();
             string loopgame = "Y";
             while (loopgame.ToLower() == "y")
@@ -28,7 +28,7 @@ namespace Millionare
                 bool Shop = false;
                 string AnsVar1 = "";
                 string AnsVar2 = "";
-                string TheAnswer;
+                string TheAnswer = "";
                 int half_chance = 1;
                 while (!GamerOver && lvl<=15)
                 {
@@ -40,11 +40,15 @@ namespace Millionare
                         Shop = false;
                     }
                     MainScreen();
-                    Console.WriteLine($"Money: {money}          Level: {lvl}            Difficulty: {difficulty}            Multiplier: {multiply}          Chances left: {chance}Half Chances left: {half_chance}\n");
+                    Console.WriteLine($"Money: {money}          Level: {lvl}            Difficulty: {difficulty}            Multiplier: {multiply}          Chances left: {chance}          Half Chances left: {half_chance}\n");
                     current_quest.PrintQuestion();
-                    if (NumAns == 4)
+                    if (TheAnswer.ToLower() == "helper")
                     {
-                        current_quest.PrintAnswers();
+                        current_quest.HalfChanceMethod(ref AnsVar1);
+                    }
+                    else if (NumAns == 4)
+                    {
+                        current_quest.PrintAnswers(); 
                     }
                     else if (NumAns == 3)
                     {
@@ -60,8 +64,16 @@ namespace Millionare
                     }
                     if (TheAnswer.ToLower() == "helper")
                     {
-                        current_quest.HalfChanceMethod(ref AnsVar1);
-                        half_chance--;
+                        if (half_chance < 0)
+                        {
+                            Console.WriteLine("You've ran out of option");
+                        }
+                        else
+                        {
+                            half_chance--;
+                            continue;
+                        }
+                                   
                     }
                     while (!AnsCheck(TheAnswer, current_quest, NumAns, AnsVar1, AnsVar2) || TheAnswer.ToLower() == "cheat" || TheAnswer.ToLower() == "helper")
                     {
@@ -302,20 +314,20 @@ namespace Millionare
 
         static void MainScreen()
         {
-            Console.WriteLine("                                             ────────────────");
+            Console.Write("                                                              ────────────────");
             string text = "Welcome To \nWho Wants To Be\nA Millionare";
             string[] lines = Regex.Split(text, "\r\n|\r|\n");
             int left = 0;
-            int top = (Console.WindowHeight / 10) - (lines.Length / 2) - 1;
+            int top = (Console.WindowHeight / 10) - (lines.Length / 2) - 2;
             int center = Console.WindowWidth / 2;
             for (int i = 0; i < lines.Length; i++)
             {
                 left = center - (lines[i].Length / 2);
                 Console.SetCursorPosition(left, top);
-                Console.WriteLine(lines[i]);
+                Console.Write($"{lines[i]}\n");
                 top = Console.CursorTop;
             }
-            Console.WriteLine("                                             ────────────────");
+            Console.WriteLine("                                                              ────────────────");
         }
 
         public static string Loopgamer()
@@ -352,7 +364,11 @@ namespace Millionare
         
         public void PrintQuestion()
         {
-            Console.WriteLine($"                                  {question}\n");
+            int left = 0;
+            int top = (Console.WindowHeight / 10) + 4;
+            int center = (Console.WindowWidth / 2) - question.Length/2 ;
+            Console.SetCursorPosition(center, top);
+            Console.WriteLine($"{question}\n");
         }
 
         public void PrintAnswers()
