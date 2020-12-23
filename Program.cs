@@ -9,6 +9,10 @@ namespace Millionare
     {
         static void Main(string[] args)
         {
+            Console.WindowHeight = 40;
+            Console.BufferHeight = 40;
+            Console.WindowWidth = 105;
+            Console.BufferWidth = 105;
             Console.Clear();
             string loopgame = "Y";
             while (loopgame.ToLower() == "y")
@@ -20,14 +24,15 @@ namespace Millionare
                 int multiply = 1;
                 int chance = 0;
                 int NumAns = 4;
+                int NumAnsStore = NumAns;
                 bool Shop = false;
                 string AnsVar1 = "";
                 string AnsVar2 = "";
                 string TheAnswer;
-                int half_chance = 0;
+                int half_chance = 1;
                 while (!GamerOver && lvl<=15)
                 {
-                   
+                    Console.Clear();
                     TheQuestionCl current_quest = TheQuestions(lvl);
                     if (Shop)
                     {
@@ -35,7 +40,7 @@ namespace Millionare
                         Shop = false;
                     }
                     MainScreen();
-                    Console.WriteLine($"Money: {money}          Level: {lvl}            Difficulty: {difficulty}            Multiplier: {multiply}          Chances left: {chance}\n");
+                    Console.WriteLine($"Money: {money}          Level: {lvl}            Difficulty: {difficulty}            Multiplier: {multiply}          Chances left: {chance}Half Chances left: {half_chance}\n");
                     current_quest.PrintQuestion();
                     if (NumAns == 4)
                     {
@@ -45,17 +50,23 @@ namespace Millionare
                     {
                         current_quest.AfterBuyAns(ref AnsVar1, ref AnsVar2);
                     }
+
                     Console.WriteLine("\nType in your final Answer:");
                     TheAnswer = Convert.ToString(Console.ReadLine());
-                    if (TheAnswer == "CHEAT" )
+                    if (TheAnswer.ToLower() == "cheat")
                     { 
                         current_quest.CheatAns();
                         TheAnswer = current_quest.CorrAns;
                     }
-                    while (!AnsCheck(TheAnswer, current_quest, NumAns, AnsVar1, AnsVar2) || TheAnswer == "CHEAT")
+                    if (TheAnswer.ToLower() == "helper")
                     {
-                        Console.WriteLine("\nThis answear doesn't exist!\nType a valid answear!");
-                        TheAnswer = Convert.ToString(Console.ReadLine());
+                        current_quest.HalfChanceMethod(ref AnsVar1);
+                        half_chance--;
+                    }
+                    while (!AnsCheck(TheAnswer, current_quest, NumAns, AnsVar1, AnsVar2) || TheAnswer.ToLower() == "cheat" || TheAnswer.ToLower() == "helper")
+                    {
+                        Console.WriteLine("\nThis answear doesn't exist!\nType a valid answear!\n");
+                        TheAnswer = Console.ReadLine();
                     }
                     if (!current_quest.CorrChecker(TheAnswer, lvl, money, multiply, ref Shop, ref money))
                     {
@@ -66,7 +77,7 @@ namespace Millionare
                         else
                         {
                             chance--;
-                            Console.WriteLine("Your Answer was wrong. \nYou have: {0} chances left", chance);
+                            Console.WriteLine($"Your answer was wrong. \nYou have: {chance} chances left");
                             Console.WriteLine("Press any key to resume the game!");
                             Console.ReadKey(true);
                             Console.Clear();
@@ -76,11 +87,18 @@ namespace Millionare
                     {
                         difficulty++;
                         lvl++;
+                        if (NumAns == 2)
+                        {
+                            NumAns = NumAnsStore;
+                        }
                     }
                     else
-                        lvl++;
+                            lvl++;
+                    if (NumAns == 2)
+                    {
+                        NumAns = NumAnsStore;
+                    }
                 }
-
                 if (lvl == 16)
                 {
                     Console.WriteLine("Congratulations!");
@@ -94,7 +112,6 @@ namespace Millionare
         }
         public static bool AnsCheck(string TheAnswer, TheQuestionCl ans_var, int NumAns, string AnsVar1, string AnsVar2)
         {
-
             switch (NumAns)
             {
                 case 4:
@@ -285,7 +302,7 @@ namespace Millionare
 
         static void MainScreen()
         {
-            Console.WriteLine("                                                    ────────────────");
+            Console.WriteLine("                                             ────────────────");
             string text = "Welcome To \nWho Wants To Be\nA Millionare";
             string[] lines = Regex.Split(text, "\r\n|\r|\n");
             int left = 0;
@@ -298,7 +315,7 @@ namespace Millionare
                 Console.WriteLine(lines[i]);
                 top = Console.CursorTop;
             }
-            Console.WriteLine("                                                    ────────────────");
+            Console.WriteLine("                                             ────────────────");
         }
 
         public static string Loopgamer()
@@ -423,7 +440,7 @@ namespace Millionare
             Console.WriteLine(CorrAns);
             return CorrAns;
         }
-        public void HalfChanceMethod(ref string AnsVar1, ref int NumAns)
+        public void HalfChanceMethod(ref string AnsVar1)
         {
             Random i = new Random();
             int inner_ran = i.Next(1, 4);
@@ -451,8 +468,6 @@ namespace Millionare
                     CorrChar = "B";
                     break;
             }
-            NumAns = 4;
         }
-
     }
 }
