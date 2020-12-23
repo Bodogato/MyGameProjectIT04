@@ -11,8 +11,8 @@ namespace Millionare
         {
             Console.WindowHeight = 40;
             Console.BufferHeight = 40;
-            Console.WindowWidth = 140;
-            Console.BufferWidth = 140;
+            Console.WindowWidth = 137;
+            Console.BufferWidth = 137;
             Console.Clear();
             string loopgame = "Y";
             while (loopgame.ToLower() == "y")
@@ -20,7 +20,7 @@ namespace Millionare
                 bool GamerOver = false;
                 int lvl = 1;
                 int difficulty = 1;
-                int money = 50000;
+                int money = 0;
                 int multiply = 1;
                 int chance = 0;
                 int NumAns = 4;
@@ -29,7 +29,7 @@ namespace Millionare
                 string AnsVar1 = "";
                 string AnsVar2 = "";
                 string TheAnswer = "";
-                int half_chance = 1;
+                int half_chance = 0;
                 while (!GamerOver && lvl<=15)
                 {
                     Console.Clear();
@@ -40,17 +40,34 @@ namespace Millionare
                         Shop = false;
                     }
                     MainScreen();
+                    if(half_chance < 0)
+                    {
+                        half_chance = 0;
+                    }
                     Console.WriteLine($"Money: {money}          Level: {lvl}            Difficulty: {difficulty}            Multiplier: {multiply}          Chances left: {chance}          Half Chances left: {half_chance}\n");
                     current_quest.PrintQuestion();
                     if (TheAnswer.ToLower() == "helper")
                     {
-                        current_quest.HalfChanceMethod(ref AnsVar1);
+                        if (half_chance <= 0)
+                        {
+                            int top = (Console.WindowHeight / 10) + 6;
+                            int left = (Console.WindowWidth / 2) - current_quest.question.Length / 2 + 4;
+                            Console.SetCursorPosition(left, top);
+                            Console.WriteLine("You've ran out of option\n");
+                            TheAnswer = "";
+                        }
+                        else
+                        {
+                            half_chance--;
+                            current_quest.HalfChanceMethod(ref AnsVar1);
+                        }
                     }
-                    else if (NumAns == 4)
+
+                    if(NumAns == 4 && TheAnswer != "helper")
                     {
                         current_quest.PrintAnswers(); 
                     }
-                    else if (NumAns == 3)
+                    else if (NumAns == 3 && TheAnswer != "helper")
                     {
                         current_quest.AfterBuyAns(ref AnsVar1, ref AnsVar2);
                     }
@@ -64,16 +81,7 @@ namespace Millionare
                     }
                     if (TheAnswer.ToLower() == "helper")
                     {
-                        if (half_chance < 0)
-                        {
-                            Console.WriteLine("You've ran out of option");
-                        }
-                        else
-                        {
-                            half_chance--;
-                            continue;
-                        }
-                                   
+                        continue;        
                     }
                     while (!AnsCheck(TheAnswer, current_quest, NumAns, AnsVar1, AnsVar2) || TheAnswer.ToLower() == "cheat" || TheAnswer.ToLower() == "helper")
                     {
@@ -105,10 +113,12 @@ namespace Millionare
                         }
                     }
                     else
-                            lvl++;
-                    if (NumAns == 2)
                     {
-                        NumAns = NumAnsStore;
+                        lvl++;
+                        if (NumAns == 2)
+                        {
+                            NumAns = NumAnsStore;
+                        }
                     }
                 }
                 if (lvl == 16)
@@ -203,7 +213,7 @@ namespace Millionare
         {
             if (money >= 5000)
             { 
-                Console.WriteLine("\n                \nSHOP MENU\n               ");
+                Console.WriteLine("\n                SHOP MENU\n               ");
                 Console.WriteLine($"Money: {money}$\n");
                 Console.WriteLine("Option		Items		    Price");
                 Console.WriteLine("1.	    Buy 1 Chance            5000$");
@@ -314,7 +324,7 @@ namespace Millionare
 
         static void MainScreen()
         {
-            Console.Write("                                                              ────────────────");
+            Console.Write("                                                             ────────────────");
             string text = "Welcome To \nWho Wants To Be\nA Millionare";
             string[] lines = Regex.Split(text, "\r\n|\r|\n");
             int left = 0;
@@ -327,7 +337,7 @@ namespace Millionare
                 Console.Write($"{lines[i]}\n");
                 top = Console.CursorTop;
             }
-            Console.WriteLine("                                                              ────────────────");
+            Console.WriteLine("                                                             ────────────────");
         }
 
         public static string Loopgamer()
@@ -364,10 +374,9 @@ namespace Millionare
         
         public void PrintQuestion()
         {
-            int left = 0;
             int top = (Console.WindowHeight / 10) + 4;
-            int center = (Console.WindowWidth / 2) - question.Length/2 ;
-            Console.SetCursorPosition(center, top);
+            int left = (Console.WindowWidth / 2) - question.Length/2 ;
+            Console.SetCursorPosition(left, top);
             Console.WriteLine($"{question}\n");
         }
 
